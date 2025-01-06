@@ -7,6 +7,7 @@ import time
 # Import functions from login.py and forgotpassword.py
 from login import login, logout
 from forgotpassword import reset_password
+from button import click_main_button
 
 def main():
     # Set up the WebDriver (ensure you have the appropriate driver installed)
