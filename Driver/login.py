@@ -1,8 +1,9 @@
-# login.py
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.alert import Alert
+
 
 def login(driver, email, password):
     """
@@ -13,6 +14,11 @@ def login(driver, email, password):
     """
     driver.get("https://account.mydriver.au/login")
     driver.maximize_window()
+
+    # Validate if email or password fields are empty
+    if not email or not password:
+        print("Error: Both email and password must be provided.")
+        return
 
     # Wait until the email input field is present
     email_input = WebDriverWait(driver, 10).until(
@@ -33,18 +39,32 @@ def login(driver, email, password):
     password_input.send_keys(Keys.ENTER)
 
     # Wait for the page to load after login (URL change)
-    WebDriverWait(driver, 10).until(
-        EC.url_changes("https://account.mydriver.au/login")
-    )
+    try:
+        WebDriverWait(driver, 10).until(
+            EC.url_changes("https://account.mydriver.au/login")
+        )
+        print("Login successful!")
+    except Exception as e:
+        # If the URL doesn't change (e.g., due to invalid login)
+        print("Login failed. Possible reasons: Invalid username, invalid password, or empty fields.")
+        # Check if an error message for invalid login is displayed
+        try:
+            error_message = WebDriverWait(driver, 5).until(
+                EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'error-message')]"))
+            )
+            print(f"Error Message: {error_message.text}")
+        except:
+            print("No error message found.")
 
-    print("Login successful!")
+        return
+
 
 def logout(driver):
     """
     Function to log out of the account.
     :param driver: WebDriver instance.
     """
-    # Wait until the profile link (Uday Majhi) is clickable, then click it
+    # Wait until the profile link (e.g., 'Uday Majhi') is clickable, then click it
     profile_link = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//a[normalize-space()="Uday Majhi"]'))
     )
