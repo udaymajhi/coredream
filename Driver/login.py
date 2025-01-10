@@ -2,8 +2,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.alert import Alert
-
 
 def login(driver, email, password):
     """
@@ -45,19 +43,8 @@ def login(driver, email, password):
         )
         print("Login successful!")
     except Exception as e:
-        # If the URL doesn't change (e.g., due to invalid login)
         print("Login failed. Possible reasons: Invalid username, invalid password, or empty fields.")
-        # Check if an error message for invalid login is displayed
-        try:
-            error_message = WebDriverWait(driver, 5).until(
-                EC.presence_of_element_located((By.XPATH, "//div[contains(@class, 'error-message')]"))
-            )
-            print(f"Error Message: {error_message.text}")
-        except:
-            print("No error message found.")
-
         return
-
 
 def logout(driver):
     """
