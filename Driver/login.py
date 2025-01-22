@@ -4,12 +4,6 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 def login(driver, email, password):
-    """
-    Function to log in to the account.
-    :param driver: WebDriver instance.
-    :param email: Email address.
-    :param password: Password.
-    """
     driver.get("https://account.mydriver.au/login")
     driver.maximize_window()
 
@@ -47,10 +41,6 @@ def login(driver, email, password):
         return
 
 def logout(driver):
-    """
-    Function to log out of the account.
-    :param driver: WebDriver instance.
-    """
     # Wait until the profile link (e.g., 'Uday Majhi') is clickable, then click it
     profile_link = WebDriverWait(driver, 10).until(
         EC.element_to_be_clickable((By.XPATH, '//a[normalize-space()="Uday Majhi"]'))
